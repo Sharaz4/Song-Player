@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="player.css">
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://kit.fontawesome.com/d2ddefd62b.js"
+            crossorigin="anonymous"></script>
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="container">
+            <nav class="bar">
+                <div class="circle">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <div class="circle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </nav>
+            <div class="music">
+                <img src="./468-thumbnail.png" class="img">
+            </div>
+            <div class="name">
+                <h2 class="song-name">
+                    kesy howa
+                </h2>
+                <p class="singer">
+                    kesy
+                </p>
+            </div>
+            <div class="song-container">
+                <audio src="./Yimmy Yimmy - Shreya Ghoshal.mp3" autostart="false"
+                    class="song">
+                </audio>
+                <input type="range" value="0" id="prog">
+                <span id="duration"></span> 
+            </div>
+            <div class="play-button">
+                <div class="circle1">
+                    <i class="fa-solid fa-backward"></i>
+                </div>
+                <div class="circle2" onclick="playPause()">
+                    <i class="fa-solid fa-play"
+                        id="ctrl"></i>
+                </div>
+                <div class="circle1" onclick="nextSong()">
+                    <i class="fa-solid fa-forward" id="next" ></i>
+                </div>
+            </div>
+        </div>
+        <script>
+let song = document.querySelector(".song");
+let progress = document.getElementById("prog");
+let controls = document.querySelector("#ctrl");
+let durationDisplay = document.getElementById("duration"); 
+let next = document.getElementById("next");
+
+song.onloadedmetadata = function() {
+    progress.max = song.duration;
+    progress.value = song.currentTime;
+    durationDisplay.textContent = formatTime(song.duration); 
+}
+function formatTime(seconds) {
+    let minutes = Math.floor(seconds / 60);
+    let secondsRemainder = Math.floor(seconds % 60);
+    if (secondsRemainder < 10) {
+        secondsRemainder = "0" + secondsRemainder;
+    }
+    return minutes + ":" + secondsRemainder;
+}
+
+song.addEventListener('timeupdate', function() {
+    progress.value = song.currentTime;
+    durationDisplay.textContent = formatTime(song.currentTime);
+});
+
+function playPause() {
+    if (controls.classList.contains("fa-pause")) {
+        song.pause();
+        controls.classList.remove("fa-pause");
+        controls.classList.add("fa-play");
+    } else {
+        song.play();
+        controls.classList.remove("fa-play");
+        controls.classList.add("fa-pause");
+    }
+}
+if(song.play()){
+        setInterval(() => {
+            progress.value = song.currentTime;
+        },500);
+    }
+    progress.oninput = function() {
+    song.currentTime = progress.value;
+    if (song.paused) {
+        controls.classList.remove("fa-pause");
+        controls.classList.add("fa-play");
+    } else {
+        controls.classList.remove("fa-play");
+        controls.classList.add("fa-pause");
+    }
+}
+function nextSong() {
+    let nextSong1 = document.createElement("audio");
+    nextSong1.setAttribute("src", "Moye Moye.mp3");
+    document.body.appendChild(nextSong1);
+}
+
+    </script>
+    </body>
+</html>
